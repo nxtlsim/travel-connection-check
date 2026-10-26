@@ -7,7 +7,7 @@
 <meta property="og:description" content="Test your travel eSIM: latency, jitter, packet loss, speed and data used per test. Free, no trackers.">
 <meta property="og:url" content="https://nxtlsim.github.io/travel-connection-check/">
 <meta property="og:image" content="https://raw.githubusercontent.com/nxtlsim/travel-connection-check/main/social-preview.png">
-<meta name="twitter:card" content="summary_large_image">
+<meta property="og:site_name" content="NXTL eSIM tools"><meta property="og:image:width" content="1280"><meta property="og:image:height" content="640"><meta property="og:image:alt" content="Travel Connection Check by NXTL eSIM"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Travel Connection Check by NXTL eSIM"><meta name="twitter:description" content="Free, tracker-free mobile connection test for travellers: latency, jitter, packet loss, download and upload speed, plus the data each test uses and its cost at local pay-as-you-go rates."><meta name="twitter:image" content="https://raw.githubusercontent.com/nxtlsim/travel-connection-check/main/social-preview.png">
 <meta name="theme-color" content="#0b0f19"><link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Conn Check"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -33,16 +33,16 @@ table{width:100%;border-collapse:collapse;font-size:.8rem}td,th{padding:6px 4px;
 #inst{display:none;align-items:center;justify-content:center;gap:10px;margin:0 0 12px}#inst img{width:24px;height:24px;border-radius:6px}
 #ioshint{display:none;position:relative;background:var(--card);border:1px solid var(--ac);border-radius:12px;padding:12px 40px 12px 12px;margin:0 0 12px;font-size:.9rem;align-items:center;gap:8px}
 #ioshint svg{flex:none}#ioshint .x{position:absolute;top:6px;right:6px;width:30px;height:30px;padding:0;margin:0;background:none;color:var(--mu);font-size:1.2rem}
-</style></head><body><main>
+#shr{display:none;flex-wrap:wrap;gap:6px;margin-top:8px}#shr a,#shr button{width:auto;margin:0;padding:8px 12px;border-radius:999px;background:#26304a;color:var(--tx);font-size:.85rem;text-decoration:none;font-weight:500}</style></head><body><main>
 <header><img src="icon-192.png" alt="NXTL eSIM logo" width="44" height="44"><div><h1>Travel Connection Check</h1><p class="sub">Latency, jitter, loss, speed and the data each test uses</p></div></header>
 <button id="inst" type="button" aria-label="Install Travel Connection Check app"><img src="icon-192.png" alt="">Install app</button>
 <div id="ioshint" role="note"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8fd3ff" stroke-width="2" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 12v8h14v-8"/></svg><span>Tap <b>Share</b>, then <b>Add to Home Screen</b></span><button class="x" id="iosx" type="button" aria-label="Dismiss">&times;</button></div>
 <section aria-labelledby="s1"><h2 id="s1">Setup</h2>
-<div class="row"><div><label for="country">Country (optional)</label><input id="country" autocomplete="off" placeholder="e.g. Japan"></div>
+<div class="row"><div><label for="country">Country (optional)</label><input id="country" list="clist" autocomplete="off" placeholder="e.g. Japan"><datalist id="clist"></datalist></div>
 <div><label for="network">Network (optional)</label><input id="network" autocomplete="off" placeholder="e.g. NTT Docomo"></div></div>
 <div class="row"><div><label for="size">Download size</label><select id="size"><option value="1">1 MB</option><option value="5" selected>5 MB</option><option value="25">25 MB</option></select></div>
-<div><label for="price">Price per GB (optional)</label><input id="price" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 2.50"></div></div>
-<p class="hint">Find your country's per-GB rate on <a href="https://nxtlsim.com/?utm_source=github&utm_medium=tool&utm_campaign=connection-check" rel="noopener">nxtlsim.com</a>. Prices are never stored in this app.</p>
+<div><label>Local data rate</label><div id="rate" class="m" style="text-align:left;padding:11px">–</div></div></div>
+<p class="hint" id="rnote">Type the country you're in to see what each test costs at NXTL pay-as-you-go rates.</p>
 <div class="chk"><input type="checkbox" id="doUp" checked><label for="doUp" style="margin:0">Include upload test (1 MB)</label></div>
 <button id="run">Run test</button><div id="status" role="status" aria-live="polite"></div></section>
 <section aria-labelledby="s2"><h2 id="s2">Results</h2><div class="grid">
@@ -51,9 +51,20 @@ table{width:100%;border-collapse:collapse;font-size:.8rem}td,th{padding:6px 4px;
 <p class="hint" id="rCost"></p></section>
 <section aria-labelledby="s3"><h2 id="s3">History</h2><div style="overflow-x:auto"><table><thead><tr><th>Time</th><th>Place</th><th>Lat</th><th>Down</th><th>Up</th><th>MB</th></tr></thead><tbody id="hist"></tbody></table></div>
 <div class="row"><button class="sec" id="csv">Export CSV</button><button class="sec" id="clr">Clear</button></div></section>
+<section aria-labelledby="sh"><h2 id="sh">Share</h2><p class="hint">Shares a link that reopens this exact result.</p><button id="shb" type="button" class="sec">Share result</button><div id="shr" role="group" aria-label="Share options"></div></section>
 <p class="hint">Tests use Cloudflare's public speed endpoints (speed.cloudflare.com). Results stay on this device. No trackers, no analytics.</p>
-<footer><a href="https://nxtlsim.com/?utm_source=github&utm_medium=tool&utm_campaign=connection-check" rel="noopener">Built by NXTL eSIM — pay-as-you-go data in 180+ countries</a><br><a href="https://github.com/nxtlsim/travel-connection-check">Source on GitHub</a></footer>
+<footer><a href="https://nxtlsim.com/?utm_source=github&utm_medium=tool&utm_campaign=travel-connection-check" rel="noopener">Built by NXTL eSIM — pay-as-you-go data in 180+ countries</a><br><a href="https://github.com/nxtlsim/travel-connection-check">Source on GitHub</a></footer>
 </main><script>
+const API='https://nxtlsim.com/wp-json/nxtl-app/v1/pricing/countries';let RATES=[],RSRC='';
+const ALIAS={TR:'Turkey',CZ:'Czech Republic',CD:'Congo Dem. Rep',CG:'Congo Republic',MO:'Macao China',MK:'Macedonia',PS:'Palestinian Territory',RU:'Russian Federation',CI:'Ivory Coast',CV:'Cape Verde',CW:'Curacao',RE:'Reunion',VC:'Saint Vincent and Grenadines',KR:'South Korea',HK:'Hong Kong',BA:'Bosnia and Herzegovina',VG:'British Virgin Islands',SZ:'Eswatini',US:'United States',GB:'United Kingdom',AE:'United Arab Emirates'};
+function nameFor(cc){if(!cc)return null;cc=cc.toUpperCase();if(ALIAS[cc])return ALIAS[cc];try{return new Intl.DisplayNames(['en'],{type:'region'}).of(cc)}catch(e){return null}}
+const rateOf=n=>RATES.find(r=>r.country===n);
+async function loadRates(){const to=ms=>{const c=new AbortController();setTimeout(()=>c.abort(),ms);return c.signal};
+ try{const r=await fetch(API,{signal:to(5000)});const j=await r.json();RATES=j.countries.filter(x=>x.min_eur>0&&x.country!=='Satellite Networks').map(x=>({country:x.country,min_eur_per_gb:x.min_eur,max_eur_per_gb:x.max_eur,networks:x.networks}));RSRC='Live rates from nxtlsim.com'}
+ catch(e){const j=await (await fetch('rates.json?v=20261026',{cache:'no-cache'})).json();RATES=j.rates;RSRC='Rates checked '+j.checked+' (offline copy)'}}
+async function geoCC(){try{const c=new AbortController();setTimeout(()=>c.abort(),3000);const j=await (await fetch('https://nxtlsim.com/wp-json/nxtl-app/v1/geo/country',{signal:c.signal})).json();if(j.country)return j.country}catch(e){}
+ const l=(navigator.languages||[navigator.language]).map(x=>(x.split('-')[1]||'')).find(x=>x.length===2);return l||null}
+const eur=x=>'€'+(x<10?x.toFixed(2):x.toFixed(0));
 const $=id=>document.getElementById(id),B='https://speed.cloudflare.com',K='tcc-history';
 const st=t=>$('status').textContent=t;
 async function ping(n=20){const t=[];let lost=0,bytes=0;
@@ -75,15 +86,24 @@ $('run').onclick=async()=>{const b=$('run');b.disabled=true;try{
  const d=await down(+$('size').value);$('rDl').textContent=f(d.mbps);
  let u={mbps:NaN,bytes:0};if($('doUp').checked){try{u=await up()}catch(e){}}$('rUl').textContent=f(u.mbps);
  const mb=(p.bytes+d.bytes+u.bytes)/1e6;$('rMb').textContent=f(mb,2);
- const price=parseFloat($('price').value);const cost=isFinite(price)&&price>0?mb/1000*price:null;
- $('rCost').textContent='Data used: ping ~'+f(p.bytes/1e3,0)+' KB, download '+f(d.bytes/1e6,2)+' MB, upload '+f(u.bytes/1e6,2)+' MB'+(cost!=null?'. Estimated cost: '+cost.toFixed(4)+' at '+price+' per GB.':'.');
+ const rr=rateOf(matchC($('country').value)),price=rr?rr.min_eur_per_gb:NaN;const cost=isFinite(price)&&price>0?mb/1000*price:null;
+ $('rCost').textContent='Data used: ping ~'+f(p.bytes/1e3,0)+' KB, download '+f(d.bytes/1e6,2)+' MB, upload '+f(u.bytes/1e6,2)+' MB'+(cost!=null?'. Cost with NXTL pay-as-you-go: €'+cost.toFixed(4)+' at €'+price.toFixed(2)+'/GB (Cheapest network, '+rr.country+').':'.');
  const h=hist();h.push({time:new Date().toISOString(),country:$('country').value.trim(),network:$('network').value.trim(),latency_ms:p.lat,jitter_ms:p.jit,loss_pct:p.loss,down_mbps:d.mbps,up_mbps:u.mbps,data_mb:mb,est_cost:cost});
- localStorage.setItem(K,JSON.stringify(h.slice(-200)));render();st('Done.')}catch(e){st('Test failed: '+e.message+'. Check your connection and try again.')}b.disabled=false};
+ localStorage.setItem(K,JSON.stringify(h.slice(-200)));render();window.SHARE_TEXT='My connection'+($('country').value?' in '+$('country').value:'')+': '+f(d.mbps)+' Mbps down, '+f(p.lat,0)+' ms latency. Test yours:';st('Done.')}catch(e){st('Test failed: '+e.message+'. Check your connection and try again.')}b.disabled=false};
 $('csv').onclick=()=>{const h=hist();if(!h.length)return st('No results yet.');const c=['time','country','network','latency_ms','jitter_ms','loss_pct','down_mbps','up_mbps','data_mb','est_cost'];
  const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';const csv=[c.join(',')].concat(h.map(r=>c.map(k=>q(r[k])).join(','))).join('\n');
  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='connection-check.csv';a.click()};
 $('clr').onclick=()=>{if(confirm('Clear all saved results?')){localStorage.removeItem(K);render()}};
-render();(function(){var b=document.getElementById('inst'),h=document.getElementById('ioshint'),dp=null;
+render();
+function matchC(v){v=(v||'').trim().toLowerCase();const m=RATES.find(r=>r.country.toLowerCase()===v);return m?m.country:null}
+function showRate(){const n=matchC($('country').value),r=n&&rateOf(n);$('rate').textContent=r?'€'+r.min_eur_per_gb.toFixed(2)+' / GB':'–';
+ $('rnote').innerHTML=r?'NXTL pay-as-you-go rate in '+n+' on the Cheapest network (default). '+RSRC+' · <a href="https://nxtlsim.com/pricing/?utm_source=github&utm_medium=tool&utm_campaign=travel-connection-check" rel="noopener">live rates</a>.':'Type the country you\'re in to see what each test costs at NXTL pay-as-you-go rates. '+(RSRC||'');
+ const p=new URLSearchParams(location.search);if(n)p.set('c',n);else p.delete('c');history.replaceState(null,'','?'+p)}
+$('country').addEventListener('input',showRate);
+(async()=>{await loadRates();RATES.forEach(r=>{const o=document.createElement('option');o.value=r.country;$('clist').appendChild(o)});
+ const q=new URLSearchParams(location.search).get('c');if(q)$('country').value=q;
+ else{const n=nameFor(await geoCC());if(n&&rateOf(n)&&!$('country').value.trim())$('country').value=n}showRate()})();
+(function(){var b=document.getElementById('inst'),h=document.getElementById('ioshint'),dp=null;
 function standalone(){return(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true}
 if(standalone())return;
 addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;b.style.display='flex'});
@@ -91,5 +111,12 @@ b.addEventListener('click',function(){if(!dp)return;dp.prompt();dp.userChoice.th
 addEventListener('appinstalled',function(){b.style.display='none';dp=null});
 var ua=navigator.userAgent,ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 var dismissed=false;try{dismissed=localStorage.getItem('tcc-ios-hint')==='1'}catch(e){}
-if(ios&&!dismissed){h.style.display='flex';document.getElementById('iosx').onclick=function(){h.style.display='none';try{localStorage.setItem('tcc-ios-hint','1')}catch(e){}}}})();if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
+if(ios&&!dismissed){h.style.display='flex';document.getElementById('iosx').onclick=function(){h.style.display='none';try{localStorage.setItem('tcc-ios-hint','1')}catch(e){}}}})();function shareText(){return (window.SHARE_TEXT||document.title)}
+(function(){var b=document.getElementById('shb'),r=document.getElementById('shr');
+b.onclick=function(){var u=location.href,t=shareText();
+ if(navigator.share){navigator.share({title:document.title,text:t,url:u}).catch(function(){});return}
+ var e=encodeURIComponent,U=e(u),T=e(t);r.innerHTML='';
+ [['WhatsApp','https://wa.me/?text='+T+'%20'+U],['Telegram','https://t.me/share/url?url='+U+'&text='+T],['X','https://twitter.com/intent/tweet?url='+U+'&text='+T],['Facebook','https://www.facebook.com/sharer/sharer.php?u='+U],['LinkedIn','https://www.linkedin.com/sharing/share-offsite/?url='+U],['Reddit','https://www.reddit.com/submit?url='+U+'&title='+T],['Email','mailto:?subject='+e(document.title)+'&body='+T+'%0A'+U],['SMS','sms:?&body='+T+'%20'+U]].forEach(function(x){var a=document.createElement('a');a.textContent=x[0];a.href=x[1];a.target='_blank';a.rel='noopener';r.appendChild(a)});
+ var c=document.createElement('button');c.type='button';c.textContent='Copy link (Discord)';c.onclick=function(){(navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(function(){c.textContent='Copied ✓'},function(){prompt('Copy this link',u)})};r.appendChild(c);r.style.display='flex'}})();
+if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
 </script></body></html>
