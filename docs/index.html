@@ -9,8 +9,8 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/nxtlsim/travel-connection-check/main/social-preview.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0b0f19"><link rel="manifest" href="manifest.json">
-<link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Conn Check"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
 :root{--bg:#0b0f19;--card:#141a2a;--line:#232c44;--tx:#e8ecf5;--mu:#9aa5bf;--ac:#3ddc97}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:env(safe-area-inset-top) 0 0}
@@ -30,8 +30,13 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{ou
 table{width:100%;border-collapse:collapse;font-size:.8rem}td,th{padding:6px 4px;border-bottom:1px solid var(--line);text-align:left}
 .hint{font-size:.8rem;color:var(--mu)}a{color:#8fd3ff}footer{text-align:center;font-size:.85rem;color:var(--mu);padding:16px 0 32px}
 .chk{display:flex;gap:8px;align-items:center;margin-top:8px}.chk input{width:auto}
+#inst{display:none;align-items:center;justify-content:center;gap:10px;margin:0 0 12px}#inst img{width:24px;height:24px;border-radius:6px}
+#ioshint{display:none;position:relative;background:var(--card);border:1px solid var(--ac);border-radius:12px;padding:12px 40px 12px 12px;margin:0 0 12px;font-size:.9rem;align-items:center;gap:8px}
+#ioshint svg{flex:none}#ioshint .x{position:absolute;top:6px;right:6px;width:30px;height:30px;padding:0;margin:0;background:none;color:var(--mu);font-size:1.2rem}
 </style></head><body><main>
 <header><img src="icon-192.png" alt="NXTL eSIM logo" width="44" height="44"><div><h1>Travel Connection Check</h1><p class="sub">Latency, jitter, loss, speed and the data each test uses</p></div></header>
+<button id="inst" type="button" aria-label="Install Travel Connection Check app"><img src="icon-192.png" alt="">Install app</button>
+<div id="ioshint" role="note"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8fd3ff" stroke-width="2" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 12v8h14v-8"/></svg><span>Tap <b>Share</b>, then <b>Add to Home Screen</b></span><button class="x" id="iosx" type="button" aria-label="Dismiss">&times;</button></div>
 <section aria-labelledby="s1"><h2 id="s1">Setup</h2>
 <div class="row"><div><label for="country">Country (optional)</label><input id="country" autocomplete="off" placeholder="e.g. Japan"></div>
 <div><label for="network">Network (optional)</label><input id="network" autocomplete="off" placeholder="e.g. NTT Docomo"></div></div>
@@ -78,5 +83,13 @@ $('csv').onclick=()=>{const h=hist();if(!h.length)return st('No results yet.');c
  const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';const csv=[c.join(',')].concat(h.map(r=>c.map(k=>q(r[k])).join(','))).join('\n');
  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='connection-check.csv';a.click()};
 $('clr').onclick=()=>{if(confirm('Clear all saved results?')){localStorage.removeItem(K);render()}};
-render();if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
+render();(function(){var b=document.getElementById('inst'),h=document.getElementById('ioshint'),dp=null;
+function standalone(){return(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true}
+if(standalone())return;
+addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;b.style.display='flex'});
+b.addEventListener('click',function(){if(!dp)return;dp.prompt();dp.userChoice.then(function(r){if(r&&r.outcome==='accepted')b.style.display='none';dp=null})});
+addEventListener('appinstalled',function(){b.style.display='none';dp=null});
+var ua=navigator.userAgent,ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+var dismissed=false;try{dismissed=localStorage.getItem('tcc-ios-hint')==='1'}catch(e){}
+if(ios&&!dismissed){h.style.display='flex';document.getElementById('iosx').onclick=function(){h.style.display='none';try{localStorage.setItem('tcc-ios-hint','1')}catch(e){}}}})();if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
 </script></body></html>
