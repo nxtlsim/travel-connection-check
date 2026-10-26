@@ -64,3 +64,15 @@ With NXTL eSIM, look up the per-GB rate for the country and network you are on a
 
 ## License
 MIT © NXTL eSIM. This repository is maintained by NXTL eSIM. Cloudflare is a trademark of Cloudflare, Inc.; this project is not affiliated with Cloudflare.
+
+## Mobile web app
+
+On a phone? Open **https://nxtlsim.github.io/travel-connection-check/** in any mobile browser. You don't need to install anything, and you can add it to your home screen to use it like an app.
+
+- Latency, jitter and packet-loss estimate (20 small requests)
+- Download test (1, 5 or 25 MB) and a 1 MB upload test
+- Shows the data each test used, with an optional per-GB price to estimate what the test cost
+- Optional country and network fields, history saved on your device, CSV export
+- No trackers or analytics. Tests use Cloudflare's public speed endpoints.
+
+The source is in [`docs/`](docs/) and is served by GitHub Pages from the `/docs` folder on `main`. Browsers can't read the carrier name or signal strength, so you type the network in yourself.
